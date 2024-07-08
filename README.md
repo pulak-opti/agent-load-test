@@ -35,6 +35,10 @@ Log level: info
 
 Polling interval: 30s
 
+CPU Limit: 2 Core per pod
+
+Memory Limit: 1 Gi per pod
+
 Here 10 pods (go-app-deployment-*******) are calling /decide api after each 100 ms.
 
 ![img](./static/image.png)
@@ -49,9 +53,46 @@ Log level: debug
 
 Polling interval: 30s
 
+CPU Limit: 2 Core per pod
+
+Memory Limit: 1 Gi per pod
+
 Here 10 pods (go-app-deployment-*******) are calling /decide api after each 100 ms.
 
 ![img](./static/image-kc.png)
 
 ![img](./static/grafana-kc.png)
+
+
+#### Config:
+
+Log level: error
+
+Polling interval: 30s
+
+CPU Limit: 2 Core per pod
+
+Memory Limit: 1 Gi per pod
+
+Here 10 pods (go-app-deployment-*******) are calling /decide api after each 100 ms.
+
+![img](./static/error.png)
+
+![img](./static/error-grafana.png)
+
+#### Config:
+
+Log level: error
+
+Polling interval: 30s
+
+CPU Limit: 500 millicore per pod
+
+Memory Limit: 1 Gi per pod
+
+Here 10 pods (go-app-deployment-*******) are calling /decide api after each 100 ms.
+
+![img](./static/cpu.png)
+
+![img](./static/cpu-grafana.png)
 
