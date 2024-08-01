@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -52,6 +53,8 @@ func main() {
 			"opti_e2e_test",
 		},
 	}
+	count := 0
+	var totalLatency time.Duration
 	for {
 		var err error
 		data.UserID, err = generateRandomString(8)
@@ -63,6 +66,8 @@ func main() {
 			log.Fatal(err)
 		}
 
+		fmt.Println("Request body: ", string(jsonData))
+
 		req, err := http.NewRequest("POST", os.Getenv("DECIDE_URL"), bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Fatal(err)
@@ -70,9 +75,19 @@ func main() {
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("X-Optimizely-SDK-Key", os.Getenv("X-Optimizely-SDK-Key"))
 
+		startTime := time.Now()
+
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Fatal(err)
+		}
+
+		latency := time.Since(startTime)
+		totalLatency += latency
+		count++
+		if count%100 == 0 {
+			log.Printf("Latency: %v\n", latency)
+			log.Printf("Average Latency: %v\n", totalLatency/time.Duration(count))
 		}
 
 		if resp.StatusCode != http.StatusOK {
@@ -91,6 +106,6 @@ func main() {
 		resp.Close = true
 		req.Close = true
 
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(10 * time.Millisecond)
 	}
 }
